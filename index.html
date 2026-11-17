@@ -536,7 +536,8 @@ const starStr = (s) => `<span class="stars" role="img" aria-label="星${s}つ">$
 const fresh = () => ({ v: 1, days: {}, hdays: {}, adays: {}, dex: {}, runs: {}, tut: false, kofi: {}, ach: {}, ebest: 0 });
 let MODE = "d";
 let mem = null; // 保存できない環境では、開いているあいだだけここに置く
-const doneOf = (r) => !!r && r.mode !== "e" && r.res.length >= r.list.length, recOf = (r) => ({ m: r.res.map((x) => x.m), k: r.list.map((t) => t.split("|")[0]) });
+const doneOf = (r) => !!r && typeof r === "object" && r.mode !== "e" && Array.isArray(r.res) && Array.isArray(r.list) && r.res.length >= r.list.length, // 形のくずれた回は終わっていない扱い（CodeRabbit 2026-11-17）
+  recOf = (r) => ({ m: r.res.map((x) => x.m), k: r.list.map((t) => t.split("|")[0]) });
 const runKey = (mode, date) => (mode === "a" ? "a:" + date : mode);
 const bookOf = (s, m) => (m === "d" ? s.days : m === "h" ? s.hdays : m === "a" ? s.adays : null);
 // 終わった回を日ごとの記録に入れる（結果を見る前に閉じても、別のタブが次の日を保存しても、終えた日を失わない）
