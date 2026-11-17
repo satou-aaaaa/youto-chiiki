@@ -563,7 +563,7 @@ const num = (v) => { if (typeof v !== "number" && typeof v !== "string") return 
 // 終えた回の id を覚える（保存に失敗しても、合わせるときに終えた回を戻さない）。古いものから捨てて30まで
 function endRun(s, id) { if (typeof id !== "string") return; const g = s.gone && typeof s.gone === "object" && !Array.isArray(s.gone) ? s.gone : {}; g[id] = 1; const ks = Object.keys(g); for (const k of ks.slice(0, Math.max(0, ks.length - 30))) delete g[k]; s.gone = g; }
 function tidy(s) {
-  s.ebest = num(s.ebest);
+  s.ebest = num(s.ebest); s.t = num(s.t); // 保存の時刻も数に直す（{valueOf:null} などで save が止まらない。CodeRabbit 2026-11-17）
   if (!s.gone || typeof s.gone !== "object" || Array.isArray(s.gone)) s.gone = {}; else { const g = {}; for (const k of Object.keys(s.gone).slice(-30)) if (s.gone[k] === 1) g[k] = 1; s.gone = g; }
   for (const q of ["days", "hdays", "adays", "dex", "runs", "kofi", "ach"]) if (!s[q] || typeof s[q] !== "object" || Array.isArray(s[q])) s[q] = {};
   for (const k in s.dex) s.dex[k] = num(s.dex[k]);
