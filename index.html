@@ -558,7 +558,7 @@ function load() {
   });
 }
 // 引き継ぎコードなどから入った値を正しい形に直す（数の所に文字が入っていても画面に出さない）
-const num = (v) => (Number.isFinite(+v) && +v >= 0 ? Math.floor(+v) : 0);
+const num = (v) => { if (typeof v !== "number" && typeof v !== "string") return 0; const n = +v; return Number.isFinite(n) && n >= 0 ? Math.floor(n) : 0; }; // 数と文字だけ数に直す（{toString:null} などで止めない。CodeRabbit youto-chiiki#1）
 // 終えた回の id を覚える（保存に失敗しても、合わせるときに終えた回を戻さない）。古いものから捨てて30まで
 function endRun(s, id) { if (typeof id !== "string") return; const g = s.gone && typeof s.gone === "object" && !Array.isArray(s.gone) ? s.gone : {}; g[id] = 1; const ks = Object.keys(g); for (const k of ks.slice(0, Math.max(0, ks.length - 30))) delete g[k]; s.gone = g; }
 function tidy(s) {
